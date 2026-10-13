@@ -16,5 +16,13 @@ printf '%s' "v$VER" > "$OUT/version.txt"
 if find "$OUT" \( -iname '*.bin' -o -iname '*.cue' -o -path '*/generated/*' -o -path '*/build/*' \) | grep -q .; then
     echo "disc-derived files in the kit"; exit 1
 fi
-(cd dist && powershell -NoProfile -Command "Compress-Archive -Path '$(basename "$OUT")\*' -DestinationPath '$(basename "$OUT").zip'")
+python -I -c "
+import os, sys, zipfile
+top = sys.argv[1]
+with zipfile.ZipFile(top + '.zip', 'w', zipfile.ZIP_DEFLATED) as z:
+    for d, _, files in os.walk(top):
+        for f in files:
+            full = os.path.join(d, f)
+            z.write(full, os.path.relpath(full, top).replace(os.sep, '/'))
+" "$OUT"
 ls -la dist/*.zip

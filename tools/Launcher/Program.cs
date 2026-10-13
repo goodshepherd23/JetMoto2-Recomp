@@ -29,10 +29,8 @@ if (rebuild || !File.Exists(game))
     }
 }
 
+// the game finds disc\ beside its build folder on its own
 var start = new ProcessStartInfo(game) { WorkingDirectory = Path.GetDirectoryName(game)!, UseShellExecute = false };
-// the runtime remembers the disc in settings.json; hand it over on the first launch only
-if (!File.Exists(Path.Combine(start.WorkingDirectory, "settings.json")) && File.Exists(cue))
-    start.ArgumentList.Add(cue);
 using var p = Process.Start(start);
 try
 {
