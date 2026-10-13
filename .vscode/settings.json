@@ -1,0 +1,5 @@
+{
+    "dotnet.defaultSolution": "disable",
+    "files.exclude": { "**/bin": true, "**/obj": true },
+    "search.exclude": { "generated": true, "build": true, "disc": true }
+}

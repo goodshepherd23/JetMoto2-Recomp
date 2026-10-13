@@ -1,0 +1,159 @@
+{
+  "game": {
+    "id": "SCUS-94167",
+    "name": "JetMoto2",
+    "output": "../generated"
+  },
+  "cue": "../disc/Jet Moto 2 - Championship Edition (USA).cue",
+  "funcMap": "funcmaps/main.json",
+  "linearSweep": true,
+  "overlays": [
+    {
+      "name": "alpine1",
+      "file": "BIN/ALPINE1.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/alpine1.json",
+      "linearSweep": true
+    },
+    {
+      "name": "alpine2",
+      "file": "BIN/ALPINE2.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/alpine2.json",
+      "linearSweep": true
+    },
+    {
+      "name": "alpine3",
+      "file": "BIN/ALPINE3.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/alpine3.json",
+      "linearSweep": true
+    },
+    {
+      "name": "canyon",
+      "file": "BIN/CANYON.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/canyon.json",
+      "linearSweep": true
+    },
+    {
+      "name": "cave",
+      "file": "BIN/CAVE.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/cave.json",
+      "linearSweep": true
+    },
+    {
+      "name": "dark",
+      "file": "BIN/DARK.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/dark.json",
+      "linearSweep": true
+    },
+    {
+      "name": "geyser",
+      "file": "BIN/GEYSER.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/geyser.json",
+      "linearSweep": true
+    },
+    {
+      "name": "iceberg",
+      "file": "BIN/ICEBERG.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/iceberg.json",
+      "linearSweep": true
+    },
+    {
+      "name": "island1",
+      "file": "BIN/ISLAND1.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/island1.json",
+      "linearSweep": true
+    },
+    {
+      "name": "island2",
+      "file": "BIN/ISLAND2.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/island2.json",
+      "linearSweep": true
+    },
+    {
+      "name": "island3",
+      "file": "BIN/ISLAND3.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/island3.json",
+      "linearSweep": true
+    },
+    {
+      "name": "jm2shell",
+      "file": "BIN/JM2SHELL.BIN",
+      "base": "0x800C10B8",
+      "funcMap": "funcmaps/jm2shell.json",
+      "linearSweep": true
+    },
+    {
+      "name": "nebulous",
+      "file": "BIN/NEBULOUS.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/nebulous.json",
+      "linearSweep": true
+    },
+    {
+      "name": "park",
+      "file": "BIN/PARK.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/park.json",
+      "linearSweep": true
+    },
+    {
+      "name": "quake",
+      "file": "BIN/QUAKE.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/quake.json",
+      "linearSweep": true
+    },
+    {
+      "name": "resort",
+      "file": "BIN/RESORT.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/resort.json",
+      "linearSweep": true
+    },
+    {
+      "name": "ruins",
+      "file": "BIN/RUINS.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/ruins.json",
+      "linearSweep": true
+    },
+    {
+      "name": "swamp1",
+      "file": "BIN/SWAMP1.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/swamp1.json",
+      "linearSweep": true
+    },
+    {
+      "name": "swamp2",
+      "file": "BIN/SWAMP2.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/swamp2.json",
+      "linearSweep": true
+    },
+    {
+      "name": "swamp3",
+      "file": "BIN/SWAMP3.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/swamp3.json",
+      "linearSweep": true
+    },
+    {
+      "name": "volcano",
+      "file": "BIN/VOLCANO.BIN",
+      "base": "0x801020B8",
+      "funcMap": "funcmaps/volcano.json",
+      "linearSweep": true
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Jet Moto 2 (debug)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Jet Moto 2: build",
+            "program": "${workspaceFolder}/build/JetMoto2Recomp.dll",
+            "cwd": "${workspaceFolder}/build",
+            "env": { "JM2_TRACE": "1" },
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}

@@ -1,0 +1,135 @@
+{
+  "functions": [
+    {
+      "address": "0x80102204",
+      "name": "func_80102204",
+      "size": 432
+    },
+    {
+      "address": "0x801023B4",
+      "name": "func_801023B4",
+      "size": 124
+    },
+    {
+      "address": "0x80102430",
+      "name": "func_80102430",
+      "size": 440
+    },
+    {
+      "address": "0x801025E8",
+      "name": "func_801025E8",
+      "size": 1716
+    },
+    {
+      "address": "0x80102C9C",
+      "name": "func_80102C9C",
+      "size": 84
+    },
+    {
+      "address": "0x80102CF0",
+      "name": "func_80102CF0",
+      "size": 480
+    },
+    {
+      "address": "0x80102ED0",
+      "name": "func_80102ED0",
+      "size": 500
+    },
+    {
+      "address": "0x801030C4",
+      "name": "func_801030C4",
+      "size": 72
+    },
+    {
+      "address": "0x8010310C",
+      "name": "func_8010310C",
+      "size": 136
+    },
+    {
+      "address": "0x80103194",
+      "name": "func_80103194",
+      "size": 60
+    },
+    {
+      "address": "0x801031D0",
+      "name": "GsSetLsMatrix",
+      "size": 48
+    },
+    {
+      "address": "0x80103200",
+      "name": "func_80103200",
+      "size": 344
+    },
+    {
+      "address": "0x80103358",
+      "name": "func_80103358",
+      "size": 60
+    },
+    {
+      "address": "0x80103394",
+      "name": "func_80103394",
+      "size": 96
+    },
+    {
+      "address": "0x801033F4",
+      "name": "func_801033F4",
+      "size": 736
+    },
+    {
+      "address": "0x801036D4",
+      "name": "func_801036D4",
+      "size": 600
+    },
+    {
+      "address": "0x8010392C",
+      "name": "func_8010392C",
+      "size": 132
+    },
+    {
+      "address": "0x801039B0",
+      "name": "func_801039B0",
+      "size": 36
+    },
+    {
+      "address": "0x801039D4",
+      "name": "func_801039D4",
+      "size": 24
+    },
+    {
+      "address": "0x801039EC",
+      "name": "func_801039EC",
+      "size": 92
+    },
+    {
+      "address": "0x80103A48",
+      "name": "func_80103A48",
+      "size": 80
+    },
+    {
+      "address": "0x80103A98",
+      "name": "func_80103A98",
+      "size": 56
+    },
+    {
+      "address": "0x80103AD0",
+      "name": "func_80103AD0",
+      "size": 20
+    },
+    {
+      "address": "0x80103AE4",
+      "name": "func_80103AE4",
+      "size": 20
+    },
+    {
+      "address": "0x80103AF8",
+      "name": "func_80103AF8",
+      "size": 56
+    },
+    {
+      "address": "0x80103B30",
+      "name": "func_80103B30",
+      "size": 12
+    }
+  ],
+  "labels": []
+}

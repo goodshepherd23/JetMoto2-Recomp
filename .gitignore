@@ -1,0 +1,10 @@
+# your disc and everything derived from it stay out of the repository
+disc/*
+!disc/PUT-YOUR-DISC-HERE.txt
+generated/
+build/
+bin/
+obj/
+dist/
+dist-launcher/
+*.log

@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Jet Moto 2: build",
+            "type": "process",
+            "command": "dotnet",
+            "args": ["build", "JetMoto2Recomp.csproj", "-c", "Release", "-o", "build", "--nologo"],
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Jet Moto 2: recompile from disc + build",
+            "type": "shell",
+            "command": "sh rebuild.sh",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Jet Moto 2: redo function maps + recompile + build",
+            "type": "shell",
+            "command": "sh rebuild.sh --maps",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Jet Moto 2: run",
+            "type": "process",
+            "command": "${workspaceFolder}/build/JetMoto2Recomp.exe",
+            "options": { "cwd": "${workspaceFolder}/build" },
+            "dependsOn": "Jet Moto 2: build",
+            "problemMatcher": []
+        }
+    ]
+}

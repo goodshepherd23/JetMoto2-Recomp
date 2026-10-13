@@ -1,0 +1,10 @@
+Copy your own dump of Jet Moto 2 - Championship Edition (USA) [SCUS-94167] here,
+keeping the Redump file names:
+
+  Jet Moto 2 - Championship Edition (USA).cue
+  Jet Moto 2 - Championship Edition (USA) (Track 01).bin
+  ...
+  Jet Moto 2 - Championship Edition (USA) (Track 17).bin
+
+Track 01 SHA-1 of the dump this was developed against:
+  b583310205117f44f2c67a3fd5ce5bc5e891cfb7

@@ -1,0 +1,65 @@
+{
+  "functions": [
+    {
+      "address": "0x80102140",
+      "name": "func_80102140",
+      "size": 196
+    },
+    {
+      "address": "0x80102204",
+      "name": "func_80102204",
+      "size": 1156
+    },
+    {
+      "address": "0x80102688",
+      "name": "func_80102688",
+      "size": 8
+    },
+    {
+      "address": "0x80102690",
+      "name": "func_80102690",
+      "size": 36
+    },
+    {
+      "address": "0x801026B4",
+      "name": "func_801026B4",
+      "size": 24
+    },
+    {
+      "address": "0x801026CC",
+      "name": "func_801026CC",
+      "size": 92
+    },
+    {
+      "address": "0x80102728",
+      "name": "func_80102728",
+      "size": 80
+    },
+    {
+      "address": "0x80102778",
+      "name": "func_80102778",
+      "size": 56
+    },
+    {
+      "address": "0x801027B0",
+      "name": "func_801027B0",
+      "size": 20
+    },
+    {
+      "address": "0x801027C4",
+      "name": "func_801027C4",
+      "size": 20
+    },
+    {
+      "address": "0x801027D8",
+      "name": "func_801027D8",
+      "size": 56
+    },
+    {
+      "address": "0x80102810",
+      "name": "func_80102810",
+      "size": 12
+    }
+  ],
+  "labels": []
+}
