@@ -6,6 +6,11 @@
 //
 //   JetMoto2.exe            play (build first if needed)
 //   JetMoto2.exe --rebuild  force a recompile + build, then play
+//
+// The kit's version.txt is copied to build\.kit-version after a successful
+// build. When an update brings a different version.txt (or the stamp is
+// missing, as in builds made before v0.1.2), the game is rebuilt automatically
+// so fixes in the new kit actually reach the exe.
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -15,12 +20,34 @@ var root = AppContext.BaseDirectory;
 var game = Path.Combine(root, "build", "JetMoto2Recomp.exe");
 var cue = Path.Combine(root, "disc", CueName);
 var rebuild = args.Contains("--rebuild", StringComparer.OrdinalIgnoreCase);
+var kitVersion = ReadText(Path.Combine(root, "version.txt"));
+var stampPath = Path.Combine(root, "build", ".kit-version");
+var outdated = File.Exists(game) && kitVersion != null && ReadText(stampPath) != kitVersion;
 
-if (rebuild || !File.Exists(game))
+if (rebuild || outdated || !File.Exists(game))
 {
     AllocConsole();
     Console.Title = "Jet Moto 2 Recompiled - setup";
-    if (!Build())
+    if (outdated && !rebuild)
+    {
+        Console.WriteLine($"Updated to {kitVersion}: rebuilding the game so the update takes effect.");
+        Console.WriteLine("Your settings, cheats and memory cards in build\\ are kept.");
+        Console.WriteLine();
+    }
+
+    if (Build())
+    {
+        if (kitVersion != null) File.WriteAllText(stampPath, kitVersion);
+    }
+    else if (outdated && !rebuild && File.Exists(game))
+    {
+        // an update shouldn't lock anyone out of a build that worked
+        Console.WriteLine();
+        Console.WriteLine("The rebuild did not finish, so the previous build will start instead.");
+        Console.WriteLine("Run JetMoto2.exe --rebuild to try again. Press Enter to continue.");
+        Console.ReadLine();
+    }
+    else
     {
         Console.WriteLine();
         Console.WriteLine("Setup did not finish. Press Enter to close.");
@@ -112,6 +139,18 @@ bool Step(string title, string exe, params string[] arguments)
     if (proc.ExitCode == 0) return true;
     Console.WriteLine($"   failed with exit code {proc.ExitCode}; details are in setup.log");
     return false;
+}
+
+static string? ReadText(string path)
+{
+    try
+    {
+        return File.Exists(path) ? File.ReadAllText(path).Trim() : null;
+    }
+    catch
+    {
+        return null;
+    }
 }
 
 bool HasSdk()

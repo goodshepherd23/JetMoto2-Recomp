@@ -30,6 +30,9 @@ You need Windows x64, the [.NET 10 SDK](https://dotnet.microsoft.com/download/do
 3. Run `JetMoto2.exe`. The first run recompiles the game from your disc and builds it, which takes a few
    minutes; after that the same exe just starts the game. `JetMoto2.exe --rebuild` forces a rebuild.
 
+After an update the launcher notices the new version and rebuilds once on its own, keeping your
+settings, cheats and memory cards.
+
 With [Quiver Launcher](https://quiverlauncher.com), install the tile, open its folder, do step 2 and press Play.
 
 ## Controls
