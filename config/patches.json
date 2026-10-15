@@ -1,1 +1,14 @@
-[{"overlay":"main","function":"CdReadSync","target":"JetMoto2.CdPatches.CdReadSync","mode":"replace"}]
+[
+  {
+    "overlay": "main",
+    "function": "CdReadSync",
+    "target": "JetMoto2.CdPatches.CdReadSync",
+    "mode": "replace"
+  },
+  {
+    "overlay": "main",
+    "function": "StoreImage",
+    "target": "JetMoto2.GpuPatches.StoreImage",
+    "mode": "replace"
+  }
+]

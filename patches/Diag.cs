@@ -8,6 +8,7 @@ public static class Diag
     public static void Start()
     {
         Snapshots();
+        PrimLog();
         if (Environment.GetEnvironmentVariable("JM2_TRACE") != "1") return;
         var seen = new HashSet<string>();
         RecompOne.Runtime.Events.Event.AddListener<RecompOne.Runtime.Events.DispEnvEvent>(e =>
@@ -21,7 +22,7 @@ public static class Diag
     }
 
     // JM2_SNAP=<dir>:<frame>,<frame>,... writes the 2 MB of guest RAM to
-    // <dir>/ram-<frame>.bin at those vsync counts, for offline RAM searches.
+    // <dir>/ram-<frame>.bin (and the 1024x512 VRAM to vram-<frame>.bin) at those vsync counts, for offline RAM searches.
     private static void Snapshots()
     {
         var spec = Environment.GetEnvironmentVariable("JM2_SNAP");
@@ -37,7 +38,46 @@ public static class Diag
             for (uint i = 0; i < ram.Length; i += 4)
                 BitConverter.TryWriteBytes(ram.AsSpan((int)i), e.Memory.ReadU32(0x80000000u + i));
             File.WriteAllBytes(Path.Combine(dir, $"ram-{frame}.bin"), ram);
+            if (RecompOne.Runtime.Runtime.Gpu is { } gpu)
+            {
+                var vram = new byte[gpu.Vram.Length * 2];
+                Buffer.BlockCopy(gpu.Vram, 0, vram, 0, vram.Length);
+                File.WriteAllBytes(Path.Combine(dir, $"vram-{frame}.bin"), vram);
+            }
             Console.WriteLine($"[snap] frame {frame}");
+        });
+    }
+
+    // JM2_PRIMLOG=<frame>,<every>,<x0>,<y0>,<x1>,<y1>: from that vsync count on,
+    // every <every> frames log the primitives of one frame that touch the box.
+    private static void PrimLog()
+    {
+        var spec = Environment.GetEnvironmentVariable("JM2_PRIMLOG");
+        if (string.IsNullOrEmpty(spec)) return;
+        var v = spec.Split(',').Select(int.Parse).ToArray();
+        long frame = 0;
+        var on = false;
+        var n = 0;
+        RecompOne.Runtime.Events.Event.AddListener<RecompOne.Runtime.Events.VSyncEvent>(_ =>
+        {
+            frame++;
+            if (on) Console.WriteLine($"[prim] ---- end frame {frame - 1} ({n} prims in box)");
+            on = frame >= v[0] && (frame - v[0]) % v[1] == 0;
+            n = 0;
+        });
+        RecompOne.Runtime.Events.Event.AddListener<RecompOne.Runtime.Events.RenderPrimEvent>(e =>
+        {
+            if (!on) return;
+            int minX = int.MaxValue, maxX = int.MinValue, minY = int.MaxValue, maxY = int.MinValue;
+            for (var i = 0; i < e.Count; i++)
+            {
+                minX = Math.Min(minX, e.X[i]); maxX = Math.Max(maxX, e.X[i]);
+                minY = Math.Min(minY, e.Y[i]); maxY = Math.Max(maxY, e.Y[i]);
+            }
+            if (maxX < v[2] || minX > v[4] || maxY < v[3] || minY > v[5]) return;
+            n++;
+            var pts = string.Join(" ", Enumerable.Range(0, e.Count).Select(i => $"{e.X[i]},{e.Y[i]}"));
+            Console.WriteLine($"[prim] n={e.Count} tex={(e.Textured ? 1 : 0)} semi={(e.SemiTransparent ? 1 : 0)} g={(e.Gouraud ? 1 : 0)} raw={(e.Raw ? 1 : 0)} clut={e.Clut:X4} area={e.DrawLeft},{e.DrawTop}-{e.DrawRight},{e.DrawBottom} pts={pts}");
         });
     }
 

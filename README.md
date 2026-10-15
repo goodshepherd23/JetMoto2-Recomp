@@ -74,6 +74,10 @@ dotnet build JetMoto2Recomp.csproj -c Release -o build
   The results are committed in `config/`.
 - **`CdReadSync`** must report drive status `0x22` or the game's file loader retries forever
   (`patches/CdPatches.cs`).
+- **`StoreImage`** is replaced for VRAM outside the frame buffers (`patches/GpuPatches.cs`). The menus
+  upload a palette and read it straight back to build their glowing cursors; RecompOne's GL renderer
+  answers a same-frame readback with stale VRAM, which turned the race-type cursor into green speckles
+  and the track-dial pointer into a grey square.
 - **libpad** replacements are disabled: the game uses `PadInit`/`PadRead`, so its own libpad runs against
   the emulated controller port.
 
