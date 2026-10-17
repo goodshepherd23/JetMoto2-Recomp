@@ -10,6 +10,25 @@ Dispatcher.Tolerant = true;
 JetMoto2.Diag.Start();
 JetMoto2.TestInput.Start();
 JetMoto2.Cheats.Register();
+JetMoto2.Widescreen.Register();
+
+// Enhancements on by default (all changeable under Settings > Display): PGXP
+// fixes the PS1 polygon wobble and is what lets RecompOne interpolate the
+// game's 30 fps up to 60; races render 16:9. Only applied where the setting
+// has never been chosen, so a player's own choice sticks.
+RecompOne.Runtime.Runtime.Defaults(v =>
+{
+    v.Default("pgxp.enable", true);
+    v.Default("display.fps", 60);
+    v.Default("jm2.widescreen", 16f / 9f);
+});
+// JM2_VIEW=key=value;key=value presets runtime view settings for a test run
+if (Environment.GetEnvironmentVariable("JM2_VIEW") is { Length: > 0 } viewTest)
+    RecompOne.Runtime.Runtime.Defaults(v =>
+    {
+        foreach (var pair in viewTest.Split(';', StringSplitOptions.RemoveEmptyEntries))
+            if (pair.Split('=', 2) is [var key, var value]) v.Values[key] = value;
+    });
 
 // Use the disc beside the build (or the one named on the command line) unless
 // the saved setting already points at a file that exists, so a fresh install

@@ -10,6 +10,7 @@ public static class Diag
         Snapshots();
         PrimLog();
         if (Environment.GetEnvironmentVariable("JM2_TRACE") != "1") return;
+        RecompOne.Runtime.Events.Event.AddListener<RecompOne.Runtime.Events.DispEnvEvent>(_ => Interlocked.Increment(ref _flips));
         var seen = new HashSet<string>();
         RecompOne.Runtime.Events.Event.AddListener<RecompOne.Runtime.Events.DispEnvEvent>(e =>
         {
@@ -81,8 +82,12 @@ public static class Diag
         });
     }
 
+    private static long _flips;
+
     private static void Loop()
     {
+        var lastFlips = 0L;
+        var clock = System.Diagnostics.Stopwatch.StartNew();
         while (true)
         {
             Thread.Sleep(3000);
@@ -92,7 +97,11 @@ public static class Diag
             try
             {
                 var sb = new System.Text.StringBuilder();
-                sb.Append($"[trace] vbl={RecompOne.Runtime.Interrupts.VBlankCount} ra={c.RA:X8} sp={c.SP:X8} v0={c.V0:X8} a0={c.A0:X8} chain:");
+                var flips = Interlocked.Read(ref _flips);
+                sb.Append($"[trace] game fps={(flips - lastFlips) / clock.Elapsed.TotalSeconds:0.0} interp={RecompOne.Runtime.Interp.Interp.Enabled}/{RecompOne.Runtime.Interp.Interp.EffectiveTarget} pgxp={RecompOne.Runtime.Pgxp.Pgxp.Enabled} ");
+                lastFlips = flips;
+                clock.Restart();
+                sb.Append($"vbl={RecompOne.Runtime.Interrupts.VBlankCount} ra={c.RA:X8} sp={c.SP:X8} v0={c.V0:X8} a0={c.A0:X8} chain:");
                 var sp = c.SP & ~3u;
                 var n = 0;
                 for (var a = sp; a < 0x80200000u && a >= 0x80000000u && n < 14; a += 4)

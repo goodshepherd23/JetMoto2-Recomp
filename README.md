@@ -35,6 +35,19 @@ settings, cheats and memory cards.
 
 With [Quiver Launcher](https://quiverlauncher.com), install the tile, open its folder, do step 2 and press Play.
 
+## Enhancements
+
+All under **System > Settings > Display**, and on by default:
+
+- **60 fps.** The game renders at 30 fps; RecompOne interpolates in-between frames (the frame-rate
+  setting goes higher, up to your monitor's refresh rate).
+- **PGXP.** Removes the PS1's wobbling polygons and warping textures. Interpolation needs it on.
+- **Widescreen races** (16:10, 16:9, 21:9 or off). The 3D view is widened properly, so nothing is
+  stretched; the HUD stays in the middle 4:3 and the pre-drawn menus stay 4:3.
+- **4x internal resolution** (adjustable 1x to 8x).
+
+Measured on a 15 W Intel laptop, PGXP plus 60 fps costs no extra CPU over stock.
+
 ## Controls
 
 Default keyboard: `Z` Cross (thrust), `X` Circle, `A` Square, `S` Triangle (turbo), `Enter` Start,
