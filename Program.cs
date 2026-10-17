@@ -11,6 +11,7 @@ JetMoto2.Diag.Start();
 JetMoto2.TestInput.Start();
 JetMoto2.Cheats.Register();
 JetMoto2.Widescreen.Register();
+JetMoto2.AutoCentering.Register();
 
 // Enhancements on by default (all changeable under Settings > Display): PGXP
 // fixes the PS1 polygon wobble and is what lets RecompOne interpolate the

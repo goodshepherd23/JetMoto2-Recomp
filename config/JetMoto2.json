@@ -168,6 +168,30 @@
       "function": "StoreImage",
       "target": "JetMoto2.GpuPatches.StoreImage",
       "mode": "replace"
+    },
+    {
+      "overlay": "main",
+      "address": "80153858",
+      "target": "JetMoto2.AutoCentering.BeforeSteering",
+      "mode": "pre"
+    },
+    {
+      "overlay": "main",
+      "address": "80153858",
+      "target": "JetMoto2.AutoCentering.AfterSteering",
+      "mode": "post"
+    },
+    {
+      "overlay": "main",
+      "address": "8015B7E4",
+      "target": "JetMoto2.AutoCentering.CountCorrection",
+      "mode": "pre"
+    },
+    {
+      "overlay": "main",
+      "address": "8015B94C",
+      "target": "JetMoto2.AutoCentering.CountCorrection",
+      "mode": "pre"
     }
   ],
   "disableHle": [

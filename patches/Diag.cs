@@ -98,7 +98,7 @@ public static class Diag
             {
                 var sb = new System.Text.StringBuilder();
                 var flips = Interlocked.Read(ref _flips);
-                sb.Append($"[trace] game fps={(flips - lastFlips) / clock.Elapsed.TotalSeconds:0.0} interp={RecompOne.Runtime.Interp.Interp.Enabled}/{RecompOne.Runtime.Interp.Interp.EffectiveTarget} pgxp={RecompOne.Runtime.Pgxp.Pgxp.Enabled} ");
+                sb.Append($"[trace] game fps={(flips - lastFlips) / clock.Elapsed.TotalSeconds:0.0} interp={RecompOne.Runtime.Interp.Interp.Enabled}/{RecompOne.Runtime.Interp.Interp.EffectiveTarget} pgxp={RecompOne.Runtime.Pgxp.Pgxp.Enabled} centering={JetMoto2.AutoCentering.Corrections} ");
                 lastFlips = flips;
                 clock.Restart();
                 sb.Append($"vbl={RecompOne.Runtime.Interrupts.VBlankCount} ra={c.RA:X8} sp={c.SP:X8} v0={c.V0:X8} a0={c.A0:X8} chain:");

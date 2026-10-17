@@ -48,6 +48,13 @@ All under **System > Settings > Display**, and on by default:
 
 Measured on a 15 W Intel laptop, PGXP plus 60 fps costs no extra CPU over stock.
 
+### Auto Centering fix
+
+The game's own **Options > Auto Centering: Off** never fully worked: the steering code levels the bike
+on two axes, and the setting only switched off one of them. With this port, Off really means off.
+This can be turned back to the original behaviour under Settings > Display ("Auto Centering Off means
+fully off"). Nothing changes when Auto Centering is On.
+
 ## Controls
 
 Default keyboard: `Z` Cross (thrust), `X` Circle, `A` Square, `S` Triangle (turbo), `Enter` Start,
@@ -94,6 +101,10 @@ dotnet build JetMoto2Recomp.csproj -c Release -o build
   upload a palette and read it straight back to build their glowing cursors; RecompOne's GL renderer
   answers a same-frame readback with stale VRAM, which turned the race-type cursor into green speckles
   and the track-dial pointer into a grey square.
+- **Auto Centering** (`patches/AutoCentering.cs`): `func_80153858` corrects two angle errors with
+  thruster nudges when they pass the threshold at `GP+0x4C8`; the Options flag (copied to `GP+0x4A0`)
+  only gates the first. While the flag is off, the threshold is raised for the duration of that
+  function, the only place it is read.
 - **libpad** replacements are disabled: the game uses `PadInit`/`PadRead`, so its own libpad runs against
   the emulated controller port.
 
