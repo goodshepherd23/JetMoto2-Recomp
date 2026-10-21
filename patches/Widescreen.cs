@@ -8,15 +8,21 @@ namespace JetMoto2;
 
 // Widescreen for races (Settings > Display > Widescreen).
 //
-// Two halves, like the MediEvil port: RecompOne's Display.WideAspect renders
-// extra picture either side of the 4:3 frame, and the game's camera presets
-// are changed so the 3D view actually fills it. Championship Edition keeps 13
-// camera presets 0x60 bytes apart from 0x801981EC; each starts with a 4.12
-// horizontal scale (+/-4096) followed by the left and right side-plane normals
-// used for culling. The scale is reduced by 4:3 / target aspect (the 1997
-// release's 16:9 GameShark code did the same: 0x1000 -> 0x0C00) and the side
-// planes are rotated out to the wider half-angle so nothing pops in at the new
-// edges. The 2D HUD stays where it was, inside the middle 4:3.
+// RecompOne's Display.WideAspect widens the render target and draws whatever
+// the game projects past the 320-pixel screen into the extra margins, at the
+// same scale. So the projection itself stays as it is (shrinking the camera's
+// horizontal scale as well, like the 1997 release's 16:9 GameShark code does
+// for an anamorphic TV stretch, squeezed everything to 3/4 width in v0.1.3),
+// and only the game's culling has to let the margins through:
+// - Championship Edition keeps 13 camera presets 0x60 bytes apart from
+//   0x801981EC; each starts with a 4.12 horizontal scale (+/-4096) followed by
+//   the left and right side-plane normals used to cull whole objects. The
+//   planes are rotated out to the wider half-angle.
+// - The polygon renderer func_801051BC drops any triangle or quad whose screen
+//   X are all < 0, which left holes in the left margin. config/fixups.json
+//   moves that test to CullLeft. (Its matching right-edge test compares
+//   against OFX<<1 with OFX in 16.16 fixed point, so it never fires.)
+// The 2D HUD stays where it was, inside the middle 4:3.
 //
 // The menus are pre-drawn 640x480 images with nothing beyond their edges, so
 // wide rendering is switched on only while the game shows a 320-wide (race)
@@ -39,11 +45,15 @@ public static class Widescreen
         ("21:9", 21f / 9f)
     ];
 
-    private static readonly (short Scale, short LX, short LZ, short RX, short RZ)?[] Original =
-        new (short, short, short, short, short)?[PresetCount];
+    private static readonly (short LX, short LZ, short RX, short RZ)?[] Original =
+        new (short, short, short, short)?[PresetCount];
 
     private static float _aspect;
     private static bool _race;
+    private static int _width = 320;
+
+    // read by the renderer's left-edge test (config/fixups.json): 0 is the original
+    public static int CullLeft;
 
     public static void Register()
     {
@@ -53,7 +63,11 @@ public static class Widescreen
             Display.SourceAspect = 4f / 3f;
             Display.OutputAspect = 4f / 3f;
         });
-        Event.AddListener<DispEnvEvent>(e => _race = e.W <= 368);
+        Event.AddListener<DispEnvEvent>(e =>
+        {
+            _race = e.W <= 368;
+            _width = e.W;
+        });
         Event.AddListener<VSyncEvent>(e => Apply(e.Memory));
         SettingsRegistry.Extend("display", Draw);
     }
@@ -63,23 +77,23 @@ public static class Widescreen
         var wide = _aspect > 4f / 3f + 0.01f;
         Display.TargetAspect = wide ? _aspect : 4f / 3f;
         Display.WideAspect = wide && _race ? _aspect : 0f;
+        CullLeft = wide && _race ? -Display.WideMargin(_width) : 0;
 
         var factor = wide ? (4f / 3f) / _aspect : 1f;
         for (var k = 0; k < PresetCount; k++)
         {
             var p = Presets + (uint)k * PresetStride;
-            var scale = (short)m.ReadU16(p);
             if (Original[k] is not { } o)
             {
+                var scale = (short)m.ReadU16(p);
                 // only presets that look untouched: scale +/-4096, matching side planes
                 short lx = (short)m.ReadU16(p + LeftPlane), lz = (short)m.ReadU16(p + LeftPlane + 2);
                 short rx = (short)m.ReadU16(p + RightPlane), rz = (short)m.ReadU16(p + RightPlane + 2);
                 if (Math.Abs((int)scale) != 4096 || lx != -rx || lz != rz || lz <= 0) continue;
-                o = (scale, lx, lz, rx, rz);
+                o = (lx, lz, rx, rz);
                 Original[k] = o;
             }
 
-            var newScale = (short)MathF.Round(o.Scale * factor);
             // plane normal (-cos t, sin t): widen the half-angle t so tan grows by 1/factor
             var t = MathF.Atan2(o.LZ, o.RX);
             var t2 = wide ? MathF.Atan(MathF.Tan(t) / factor) : t;
@@ -88,7 +102,6 @@ public static class Widescreen
             var nz = (short)MathF.Round(MathF.Sin(t2) * len);
             if (!wide) (nx, nz) = (o.RX, o.RZ);
 
-            m.WriteU16(p, (ushort)newScale);
             m.WriteU16(p + LeftPlane, (ushort)(short)-nx);
             m.WriteU16(p + LeftPlane + 2, (ushort)nz);
             m.WriteU16(p + RightPlane, (ushort)nx);

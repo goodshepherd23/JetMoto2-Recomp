@@ -34,5 +34,17 @@
     "address": "8015B94C",
     "target": "JetMoto2.AutoCentering.CountCorrection",
     "mode": "pre"
+  },
+  {
+    "overlay": "main",
+    "function": "VSync",
+    "target": "JetMoto2.FramePacing.VSync",
+    "mode": "replace"
+  },
+  {
+    "overlay": "main",
+    "function": "DrawSync",
+    "target": "JetMoto2.FramePacing.BeforeDrawSync",
+    "mode": "pre"
   }
 ]

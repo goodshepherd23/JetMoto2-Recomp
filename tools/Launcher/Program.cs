@@ -106,6 +106,7 @@ bool Build()
            && Step("2/3  Recompiling the game from the disc",
                Path.Combine(recompiler, "bin", "Release", "net10.0", "recompone.exe"),
                Path.Combine(root, "config", "JetMoto2.json"))
+           && ApplyFixups()
            && Step("3/3  Building the game", "dotnet", "build", Path.Combine(root, "JetMoto2Recomp.csproj"),
                "-c", "Release", "-o", Path.Combine(root, "build"), "--nologo", "-v", "q")
            && File.Exists(game);
@@ -139,6 +140,30 @@ bool Step(string title, string exe, params string[] arguments)
     if (proc.ExitCode == 0) return true;
     Console.WriteLine($"   failed with exit code {proc.ExitCode}; details are in setup.log");
     return false;
+}
+
+// config/fixups.json: single-statement edits to the recompiler output that
+// RecompOne's whole-function patches can't express. Same rules as
+// tools/apply_fixups.py: replace the first `find` just after `after`.
+bool ApplyFixups()
+{
+    var fixups = System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "config", "fixups.json")));
+    foreach (var f in fixups.RootElement.EnumerateArray())
+    {
+        string Get(string name) => f.GetProperty(name).GetString()!;
+        var path = Path.Combine(root, "generated", Get("file"));
+        var text = File.ReadAllText(path);
+        if (text.Contains(Get("replace"))) continue;
+        var anchor = text.IndexOf(Get("after"), StringComparison.Ordinal);
+        var at = anchor < 0 ? -1 : text.IndexOf(Get("find"), anchor, StringComparison.Ordinal);
+        if (at < 0 || at - anchor > 200)
+        {
+            Console.WriteLine($"   fixup not found in {Get("file")}: {Get("after")} ... {Get("find")}");
+            return false;
+        }
+        File.WriteAllText(path, text[..at] + Get("replace") + text[(at + Get("find").Length)..]);
+    }
+    return true;
 }
 
 static string? ReadText(string path)

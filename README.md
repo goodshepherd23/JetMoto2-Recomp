@@ -40,10 +40,12 @@ With [Quiver Launcher](https://quiverlauncher.com), install the tile, open its f
 All under **System > Settings > Display**, and on by default:
 
 - **60 fps.** The game renders at 30 fps; RecompOne interpolates in-between frames (the frame-rate
-  setting goes higher, up to your monitor's refresh rate).
+  setting goes higher, up to your monitor's refresh rate). Before v0.1.5 this only affected the menus, not
+  races, so races still looked like 30 fps whatever the setting said.
 - **PGXP.** Removes the PS1's wobbling polygons and warping textures. Interpolation needs it on.
-- **Widescreen races** (16:10, 16:9, 21:9 or off). The 3D view is widened properly, so nothing is
-  stretched; the HUD stays in the middle 4:3 and the pre-drawn menus stay 4:3.
+- **Widescreen races** (16:10, 16:9, 21:9 or off). The 3D view shows more to each side at the same
+  scale; the HUD stays in the middle 4:3 and the pre-drawn menus stay 4:3. (v0.1.3 and v0.1.4 squeezed
+  the 3D view to 3/4 width and left holes in the left edge; fixed in v0.1.5.)
 - **4x internal resolution** (adjustable 1x to 8x).
 
 Measured on a 15 W Intel laptop, PGXP plus 60 fps costs no extra CPU over stock.
@@ -83,6 +85,7 @@ Put the disc in `disc\`, then either run the launcher project (`dotnet run --pro
 ```
 dotnet build RecompOne/RecompOne.Recompiler -c Release
 RecompOne/RecompOne.Recompiler/bin/Release/net10.0/recompone.exe config/JetMoto2.json
+python tools/apply_fixups.py .
 dotnet build JetMoto2Recomp.csproj -c Release -o build
 ```
 
@@ -105,6 +108,14 @@ dotnet build JetMoto2Recomp.csproj -c Release -o build
   thruster nudges when they pass the threshold at `GP+0x4C8`; the Options flag (copied to `GP+0x4A0`)
   only gates the first. While the flag is off, the threshold is raised for the duration of that
   function, the only place it is read.
+- **Frame pacing** (`patches/FramePacing.cs`): the race loop caps itself at 30 fps by calling `VSync(0)`
+  repeatedly until enough time has passed. RecompOne publishes a frame on every `VSync`, so every other one
+  was empty and its interpolator never had two frames to blend. The first wait of each frame now asks for
+  both vblanks at once.
+- **Widescreen culling.** The polygon renderer `func_801051BC` drops polygons whose screen X are all
+  below 0, which cut holes into the left margin. That one test sits inside a very large function, so
+  `config/fixups.json` edits it in the generated C# after recompiling (`tools/apply_fixups.py`; the
+  launcher does the same) to read `Widescreen.CullLeft`, which is 0 unless widescreen is on.
 - **libpad** replacements are disabled: the game uses `PadInit`/`PadRead`, so its own libpad runs against
   the emulated controller port.
 

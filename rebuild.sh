@@ -14,4 +14,5 @@ fi
 python -I tools/merge_config.py config
 RecompOne/RecompOne.Recompiler/bin/Release/net10.0/recompone.exe config/JetMoto2.json > recompile.log 2>&1 || { tail -20 recompile.log; exit 1; }
 grep -E "WARNING|applied" recompile.log || true
+python -I tools/apply_fixups.py .
 dotnet build JetMoto2Recomp.csproj -c Release -o build --nologo 2>&1 | grep -E " error |Build succeeded"

@@ -1,0 +1,16 @@
+[
+  {
+    "why": "func_801051BC drops a triangle when all three screen X are < 0; in widescreen that edge is the left margin",
+    "file": "main.cs",
+    "after": "L801055F0: ;",
+    "find": "if ((int)c.S6 < 0) {",
+    "replace": "if ((int)c.S6 < JetMoto2.Widescreen.CullLeft) {"
+  },
+  {
+    "why": "same test for quads (the fourth vertex comes from a separate RTPS)",
+    "file": "main.cs",
+    "after": "L801058D8: ;",
+    "find": "if ((int)c.T8 < 0) {",
+    "replace": "if ((int)c.T8 < JetMoto2.Widescreen.CullLeft) {"
+  }
+]
