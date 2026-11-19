@@ -10,7 +10,7 @@
     "serial": "SCUS-94167"
   },
   "project": "Jet Moto 2 Recompiled",
-  "status": "released",
+  "status": "playable",
   "targets": ["Windows"],
   "toolchain": "RecompOne"
 }
